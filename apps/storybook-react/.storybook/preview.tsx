@@ -9,9 +9,10 @@ import 'raf/polyfill' // const OriginalNextImage = NextImage.default
 //   configurable: true,
 //   value: (props) => <OriginalNextImage {...props} unoptimized />
 // })
-import {useThemeState} from 'app/src/state/themeState'
-import {Provider} from 'app/src/provider'
-import {YStack} from "tamagui-extras";
+// import { useThemeState } from 'app/src/state/themeState'
+import { Provider } from 'app/src/provider'
+import { YStack } from 'tamagui'
+import { LmTamaguiProvider } from '../LmTamaguiProvider'
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
@@ -48,7 +49,7 @@ export const decorators = [
   (Story, args: any) => {
     // The theme global we just declared
     const { theme: themeKey } = args.globals
-    const name = useThemeState((state) => state.name)
+    const name = 'light'
     let theme = themeKey
     if (!theme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
       // dark mode
@@ -56,11 +57,11 @@ export const decorators = [
     }
     return (
       <>
-        <Provider defaultTheme={name || theme}>
+        <LmTamaguiProvider defaultTheme={name || theme}>
           <YStack bc={'$backgroundStrong'}>
             <Story />
           </YStack>
-        </Provider>
+        </LmTamaguiProvider>
       </>
     )
   },
